@@ -3,24 +3,18 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import '../style/index.scss';
 
-// Components
-import ComponentA from './ComponentA';
-import ComponentB from './ComponentB';
-
-
 class App extends Component {
-    constructor(props){
-        super(props)
+    constructor(props) {
+        super(props);
     }
 
-    render(){
-         return(        
-            <div>
-                <h1>Hello World</h1>
-                <ComponentA />
-                <ComponentB />
-            </div>         
-        )
+    render() {
+         return(
+            <div className="app-container">
+                <span className="app-container--redux">REDUX&nbsp;</span>
+                <span className="app-container--world">WORLD</span>
+           </div>
+        );
     }
 }
 

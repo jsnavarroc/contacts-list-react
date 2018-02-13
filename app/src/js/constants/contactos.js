@@ -1,44 +1,15 @@
-import axios from 'axios';
+// Dependencies
+import { definirAccion } from '../utils/definirAccion';
+import { INICIO, COMPLETADO, ERROR } from './estadosFrecuentes';
 
-let contactos = [];
+const accionesHTTP = [ INICIO, COMPLETADO, ERROR ];
+//Estado local
+definirAccion('ESTADO_CONTACTOS', ['LIMPIAR_FORMULARIO',
+                                   'GUARDAR_NOMBRE',
+                                   'GUARDAR_CELULAR']);
 
-export default {
-  incluir(contacto) {
-    if (
-      contacto.hasOwnProperty('nombre') &&
-			contacto.hasOwnProperty('email') &&
-			contacto.hasOwnProperty('id')
-    ) {
-      contactos.push(contacto);
-    } else {
-      throw 'Formato inválido';
-    }
-  },
-  borrar(contactoId) {
-    const index = contactos
-      .map(({ id }) => id)
-      .findIndex(id => id === contactoId);
-
-    if (index > -1) {
-      contactos = [
-        ...contactos.slice(0, index),
-        ...contactos.slice(index + 1),
-      ];
-    }
-  },
-
-  reiniciar() {
-    contactos = [];
-  },
-  db() {
-    return [
-      ...contactos,
-    ];
-  },
-  starwars(url) {
-    // https://swapi.co/
-    // http://swapi.co/api/people
-    return axios.get(url)
-      .then(({ data }) => data.count);
-  },
-};
+// Peticiones al servidor
+export const OBETENER_CONTACTOS = definirAccion('OBETENER_CONTACTOS', accionesHTTP);
+export const CREAR_CONTACTOS = definirAccion('CREAR_CONTACTOS', accionesHTTP);
+export const ACTUALIZAR_CONTACTOS = definirAccion('ACTUALIZAR_CONTACTOS', accionesHTTP);
+export const BORRAR_CONTACTOS = definirAccion('BORRAR_CONTACTOS', accionesHTTP);

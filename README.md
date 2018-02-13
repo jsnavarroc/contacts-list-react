@@ -21,42 +21,32 @@ webpackage.config.js
 pakage.json
 README.md
 ```
-## Parametres 
-* Initialize npm in proyect
+# Comandos Inciales
+## HTML
+1. En App.js
 ```
-npm init
+div.app-container>span.app-container--redux{REDUX&nbsp;}+span.app-container--world{WORLD}
+```
+2. Creación de las constantes de estado para el formulario, funcion reducer.
+```
+http://bit.ly/2ssp7TC
+
+Esto es lo que se genera:
+>>GUARDAR_NOMBRE: "ESTADO_CONTACTOS :: GUARDAR_NOMBRE"
+>>LIMPIAR_FORMULARIO:"ESTADO_CONTACTOS :: LIMPIAR_FORMULARIO"
+```
+3. Creación de las constantes de estado para el servidor htttp.
+```
+http://bit.ly/2ECiVxf
+
+Esto es lo que se genera:
+>> COMPLETADO:"BORRAR_CONTACTOS :: COMPLETADO" | COMPLETADO:"OBETENER_CONTACTOS :: COMPLETADO"
+>> ERROR:"BORRAR_CONTACTOS :: ERROR"           | ERROR:"OBETENER_CONTACTOS :: ERROR"
+>> INCIO:"BORRAR_CONTACTOS :: INCIO"           | INCIO:"OBETENER_CONTACTOS :: INCIO"
+
+>> COMPLETADO:"ACTUALIZAR_CONTACTOS :: COMPLETADO" | COMPLETADO:"CREAR_CONTACTOS :: COMPLETADO"
+>> ERROR:"ACTUALIZAR_CONTACTOS :: ERROR"           | ERROR:"CREAR_CONTACTOS :: ERROR"
+>> INCIO:"ACTUALIZAR_CONTACTOS :: INCIO"           | INCIO:"CREAR_CONTACTOS :: INCIO"
+
 ```
 
-## If required config components
-
-
-* Install dependencies development:
-
-```
-npm i webpack webpack-dev-server babel-cli babel-loader babel-core babel-preset-es2015 babel-preset-react babel-preset-stage-2 -D
-```
-
-* Install dependencies: 
-
-```
-npm i react react-dom -S
-```
-* Install dependencies development CSS Sass
-
-```
-npm i extract-text-webpack-plugin style-loader url-loader file-loader css-loader node-sass sass-loader optimize-css-assets-webpack-plugin -D
-```
-
-* Install dependencies development Jest 
-```
-npm i babel-jest jest -D
-``` 
-* Install dependencies Jest 
-```
-npm i axios -S
-``` 
-* Install dependencies Eslint only Visual Studio Code for Atom and Sublime is different ¡Alert!
-```
->> eslint --init 
->> npm i eslint babel-eslint -D
-``` 
