@@ -21,7 +21,7 @@ webpackage.config.js
 pakage.json
 README.md
 ```
-# Comandos Inciales
+# Comandos Iniciales
 ## HTML
 1. En App.js
 ```
@@ -40,9 +40,9 @@ Esto es lo que se genera:
 http://bit.ly/2ECiVxf
 
 Esto es lo que se genera:
->> COMPLETADO:"BORRAR_CONTACTOS :: COMPLETADO" | COMPLETADO:"OBETENER_CONTACTOS :: COMPLETADO"
->> ERROR:"BORRAR_CONTACTOS :: ERROR"           | ERROR:"OBETENER_CONTACTOS :: ERROR"
->> INCIO:"BORRAR_CONTACTOS :: INCIO"           | INCIO:"OBETENER_CONTACTOS :: INCIO"
+>> COMPLETADO:"BORRAR_CONTACTOS :: COMPLETADO" | COMPLETADO:"OBTENER_CONTACTOS :: COMPLETADO"
+>> ERROR:"BORRAR_CONTACTOS :: ERROR"           | ERROR:"OBTENER_CONTACTOS :: ERROR"
+>> INCIO:"BORRAR_CONTACTOS :: INCIO"           | INCIO:"OBTENER_CONTACTOS :: INCIO"
 
 >> COMPLETADO:"ACTUALIZAR_CONTACTOS :: COMPLETADO" | COMPLETADO:"CREAR_CONTACTOS :: COMPLETADO"
 >> ERROR:"ACTUALIZAR_CONTACTOS :: ERROR"           | ERROR:"CREAR_CONTACTOS :: ERROR"
@@ -50,3 +50,8 @@ Esto es lo que se genera:
 
 ```
 
+4. Unit Test :: Acciones, instalar estas dependencias 
+```
+npm i redux-thunk -S
+npm i sinon redux-mock-store -D
+```
