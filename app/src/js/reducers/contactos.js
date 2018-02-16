@@ -5,7 +5,7 @@ const estadoInicial = {
     nombre: '',
     celular: '',
     contactos: [],
-    cargango:false,
+    cargando:false,
     error: '',
 };
 
