@@ -90,6 +90,100 @@ describe('Contactos - Acciones', () => {
             };
             expect( actual ).toEqual( esperado );
         });
+
+        it('obtenerContactos() retorna el objecto esperado cuando es Completado.', (done) => {
+			const uid = 'asda!E3-##@$#@$#-DSFdsfs';
+			const mockContacto = {
+				nombre: 'Steven',
+				celular: '2211-99-11',
+				uid,
+			};
+
+			const mockEstado = {
+				contactos: {
+					nombre: '',
+					telefono: '',
+					contactos: [mockContacto],
+					cargando: false,
+					error: '',
+				},
+			};
+			// Detener y simular una llamada satisfactoria
+			const stubAxiosGet = sinon.stub(axios, 'get')
+				.callsFake(() => Promise.resolve({ data: mockContacto }));
+
+			const store = mockStore(mockEstado);
+			// Ejecutar el Async Action Creator
+			return store.dispatch(
+				ACCIONES.obtenerContactos()
+			)
+				.then(() => {
+					const actual = store.getActions();
+					const esperado = [{
+						type: CONSTANTES_CONTACTO.OBTENER_CONTACTOS.INICIO,
+						payload: {
+                            contactos:[],
+							cargando: true,
+							error: '',
+						},
+					}, {
+						type: CONSTANTES_CONTACTO.OBTENER_CONTACTOS.COMPLETADO,
+						payload: {
+							contactos: mockContacto,
+							cargando: false,
+							error: '',
+						},
+					}];
+
+					stubAxiosGet.restore();
+					expect(actual).toEqual(esperado);
+					done();
+				});
+		});
+
+        it('obtenerContactos() retorna el objecto esperado cuando es Error.', (done) => {
+            const uid = 'asda!E3-##@$#@$#-DSFdsfs';
+			const mockContacto = {
+                nombre: 'Steven',
+				celular: '2211-99-11',
+				uid,
+			};
+			const error = 'Se produjo un error';
+
+			// Detener y simular una llamada satisfactoria
+			const stubAxiosGet = sinon.stub(axios, 'get')
+            .callsFake(() => Promise.reject(error));
+
+			const store = mockStore({
+				contactos: {
+                    contactos: [mockContacto],
+				},
+			});
+			// Ejecutar el Async Action Creator
+			return store.dispatch(ACCIONES.obtenerContactos())
+            .then(() => {
+					const actual = store.getActions();
+					const esperado = [{
+                        type: CONSTANTES_CONTACTO.OBTENER_CONTACTOS.INICIO,
+						payload: {
+                            contactos:[],
+                            cargando:true,
+                            error:'',
+						},
+					}, {
+                        type: CONSTANTES_CONTACTO.OBTENER_CONTACTOS.ERROR,
+						payload: {
+                            error,
+							cargando: false,
+						},
+					}];
+
+					stubAxiosGet.restore();
+					expect(actual).toEqual(esperado);
+					done();
+				});
+        });
+
     });
 
     describe('CrearContactos', () => {
@@ -131,6 +225,85 @@ describe('Contactos - Acciones', () => {
             };
             expect( actual ).toEqual( esperado );
         });
+
+        it('crearContacto(nombre, celular) retorna el objecto esperado cuando es Completado.', (done) => {
+			const uid = 'asda!E3-##@$#@$#-DSFdsfs';
+			const mockContacto = {
+				nombre: 'Johan',
+				celular: '31666565',
+				uid,
+            };
+
+			// Detener y simular una llamada satisfactoria
+			const stubAxiosPost = sinon.stub(axios, 'post')
+				.callsFake(() => Promise.resolve({ item: mockContacto }));
+
+			const store = mockStore({});
+			// Ejecutar el Async Action Creator
+			return store.dispatch(
+				ACCIONES.crearContacto(mockContacto.nombre, mockContacto.celular)
+			)
+				.then(() => {
+					const actual = store.getActions();
+					const esperado = [{
+						type: CONSTANTES_CONTACTO.CREAR_CONTACTO.INICIO,
+						payload: {
+							cargando: true,
+							error: '',
+						},
+					}, {
+						type: CONSTANTES_CONTACTO.CREAR_CONTACTO.COMPLETADO,
+						payload: {
+							contacto: mockContacto,
+							cargando: false,
+							error: '',
+						},
+					}];
+
+					stubAxiosPost.restore();
+					expect(actual).toEqual(esperado);
+					done();
+				});
+		});
+
+        it('crearContacto(nombre, celular) retorna el objecto esperado cuando es Error.', (done) => {
+            const uid = 'asda!E3-##@$#@$#-DSFdsfs';
+			const mockContacto = {
+                nombre: 'Steven',
+				celular: '2211-99-11',
+				uid,
+			};
+			const error = 'Se produjo un error';
+
+			// Detener y simular una llamada satisfactoria
+			const stubAxiosPost = sinon.stub(axios, 'post')
+            .callsFake(() => Promise.reject(error));
+
+			const store = mockStore({});
+			// Ejecutar el Async Action Creator
+			return store.dispatch(ACCIONES.crearContacto(mockContacto.nombre, mockContacto.celular))
+            .then(() => {
+					const actual = store.getActions();
+					const esperado = [{
+                        type: CONSTANTES_CONTACTO.CREAR_CONTACTO.INICIO,
+						payload: {
+							cargando: true,
+							error: '',
+						},
+					}, {
+                        type: CONSTANTES_CONTACTO.CREAR_CONTACTO.ERROR,
+						payload: {
+							cargando: false,
+							error,
+						},
+					}];
+
+					stubAxiosPost.restore();
+					expect(actual).toEqual(esperado);
+					done();
+				});
+        });
+
     });
 
     describe('Actualizar Contacto', () => {
@@ -177,10 +350,10 @@ describe('Contactos - Acciones', () => {
         });
 
         it('actualizarContacto(nombre, celular, uid) retorna el objecto esperado cuando es Completado.', (done) => {
-            const uid = 100;
+			const uid = 'asda!E3-##@$#@$#-DSFdsfs';
 			const mockContacto = {
-				nombre: 'Johan',
-				celular: '316699854',
+				nombre: 'Steven',
+				celular: '2211-99-11',
 				uid,
 			};
 
@@ -199,7 +372,9 @@ describe('Contactos - Acciones', () => {
 
 			const store = mockStore(mockEstado);
 			// Ejecutar el Async Action Creator
-			return store.dispatch( ACCIONES.actualizarContacto(mockContacto.nombre, mockContacto.celular, uid))
+			return store.dispatch(
+				ACCIONES.actualizarContacto(mockContacto.nombre, mockContacto.celular, uid)
+			)
 				.then(() => {
 					const actual = store.getActions();
 					const esperado = [{
@@ -222,13 +397,85 @@ describe('Contactos - Acciones', () => {
 					expect(actual).toEqual(esperado);
 					done();
 				});
+		});
 
+        it('actualizarContacto(nombre, celular, uid) retorna el objecto esperado cuando es Error.', (done) => {
+            const uid = 'asda!E3-##@$#@$#-DSFdsfs';
+			const mockContacto = {
+                nombre: 'Steven',
+				celular: '2211-99-11',
+				uid,
+			};
+			const error = 'Se produjo un error';
+
+			// Detener y simular una llamada satisfactoria
+			const stubAxiosActualizar = sinon.stub(axios, 'put')
+            .callsFake(() => Promise.reject(error));
+
+			const store = mockStore({
+				contactos: {
+                    contactos: [mockContacto],
+				},
+			});
+			// Ejecutar el Async Action Creator
+			return store.dispatch(ACCIONES.actualizarContacto(mockContacto.nombre, mockContacto.celular, uid))
+            .then(() => {
+					const actual = store.getActions();
+					const esperado = [{
+                        type: CONSTANTES_CONTACTO.ACTUALIZAR_CONTACTO.INICIO,
+						payload: {
+							cargando: true,
+							error: '',
+						},
+					}, {
+                        type: CONSTANTES_CONTACTO.ACTUALIZAR_CONTACTO.ERROR,
+						payload: {
+							cargando: false,
+							error,
+						},
+					}];
+
+					stubAxiosActualizar.restore();
+					expect(actual).toEqual(esperado);
+					done();
+				});
         });
+
+        it('actualizarContacto(nombre, celular, uid) retorna el objecto esperado cuando el uid no se encontró.', () => {
+
+			const uid = 'asda!E3-##@$#@$#-DSFdsfs';
+
+			const mockContacto = {
+				nombre: 'Steven',
+				celular: '2211-99-11',
+				uid: 'asda!E3-##@$#@$#',
+			};
+
+			const error = 'El contacto no ha sido encontrado.';
+
+			const store = mockStore({
+				contactos: {
+					contactos: [mockContacto],
+				},
+			});
+
+			// Ejecutar el Async Action Creator
+			const actual = store.dispatch(ACCIONES.actualizarContacto(mockContacto.nombre, mockContacto.celular, uid));
+			const esperado = {
+				type: CONSTANTES_CONTACTO.ACTUALIZAR_CONTACTO.ERROR,
+				payload: {
+					error,
+					cargando: false,
+				},
+			};
+			expect(actual).toEqual(esperado);
+		});
+
     });
 
     describe('Borrar Contacto', () => {
-        it('borrarContactoInicio() retorna el objeto esperado.', () => {
-            const actual = ACCIONES.actualizarContactoInicio();
+        it('borrarContactoInicio() retorna el objeto esperado', () => {
+            const actual = ACCIONES.borrarContactoInicio();
             const esperado = {
                 type: CONSTANTES_CONTACTO.BORRAR_CONTACTO.INICIO,
                 payload: {
@@ -266,5 +513,126 @@ describe('Contactos - Acciones', () => {
             };
             expect( actual ).toEqual( esperado );
         });
+
+        it('borrarContacto(uid) retorna el objecto esperado cuando es Completado.', (done) => {
+			const uid = 'asda!E3-##@$#@$#-DSFdsfs';
+			const mockContacto = {
+				nombre: 'Johan',
+				celular: '316696469',
+				uid,
+			};
+
+			const mockEstado = {
+				contactos: {
+					nombre: '',
+					telefono: '',
+					contactos: [mockContacto],
+					cargando: false,
+					error: '',
+				},
+			};
+			// Detener y simular una llamada satisfactoria
+			const stubAxiosDelete = sinon.stub(axios, 'delete')
+				.callsFake(() => Promise.resolve({ uid }));
+
+			const store = mockStore(mockEstado);
+			// Ejecutar el Async Action Creator
+			return store.dispatch(
+				ACCIONES.borrarContacto(uid)
+			)
+				.then(() => {
+					const actual = store.getActions();
+					const esperado = [{
+						type: CONSTANTES_CONTACTO.BORRAR_CONTACTO.INICIO,
+						payload: {
+							cargando: true,
+							error: '',
+						},
+					}, {
+						type: CONSTANTES_CONTACTO.BORRAR_CONTACTO.COMPLETADO,
+						payload: {
+                            index: 0,
+							cargando: false,
+							error: '',
+						},
+					}];
+
+					stubAxiosDelete.restore();
+					expect(actual).toEqual(esperado);
+					done();
+				});
+        });
+
+        it('borrarContacto(uid) retorna el objecto esperado cuando es Error.', (done) => {
+            const uid = 'asda!E3-##@$#@$#-DSFdsfs';
+			const mockContacto = {
+                nombre: 'Johan',
+				celular: '2211-99-11',
+				uid,
+			};
+			const error = 'Se produjo un error';
+
+			// Detener y simular una llamada satisfactoria
+			const stubAxiosDelete = sinon.stub(axios, 'delete')
+            .callsFake(() => Promise.reject(error));
+
+			const store = mockStore({
+				contactos: {
+                    contactos: [mockContacto],
+				},
+			});
+			// Ejecutar el Async Action Creator
+			return store.dispatch(ACCIONES.borrarContacto(uid))
+            .then(() => {
+					const actual = store.getActions();
+					const esperado = [{
+                        type: CONSTANTES_CONTACTO.BORRAR_CONTACTO.INICIO,
+						payload: {
+							cargando: true,
+							error: '',
+						},
+					}, {
+                        type: CONSTANTES_CONTACTO.BORRAR_CONTACTO.ERROR,
+						payload: {
+							cargando: false,
+							error,
+						},
+                    }];
+
+					stubAxiosDelete.restore();
+					expect(actual).toEqual(esperado);
+					done();
+				});
+        });
+
+        it('borrarContacto(uid) retorna el objecto esperado cuando el uid no se encontró.', () => {
+
+			const uid = 'asda!E3-##@$#@$#-DSFdsfs';
+
+			const mockContacto = {
+				nombre: 'Steven',
+				celular: '2211-99-11',
+				uid: 'asda!E3-##@$#@$#',
+			};
+
+			const error = 'El contacto no ha sido encontrado.';
+
+			const store = mockStore({
+				contactos: {
+					contactos: [mockContacto],
+				},
+			});
+
+			// Ejecutar el Async Action Creator
+			const actual = store.dispatch(ACCIONES.borrarContacto(uid));
+			const esperado = {
+				type: CONSTANTES_CONTACTO.BORRAR_CONTACTO.ERROR,
+				payload: {
+					error,
+					cargando: false,
+				},
+			};
+			expect(actual).toEqual(esperado);
+		});
     });
 });

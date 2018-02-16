@@ -81,7 +81,7 @@ export function obtenerContactos() {
         dispatch(obtenerContactosInicio());
 
         return axios.get(`${apiUrl}/contactos`)
-        .then(({ data }) => dispatch( obtenerContactosCompletado( data) ) )
+        .then(({ data }) => dispatch( obtenerContactosCompletado( data ) ) )
         .catch((error) => {
             const mensaje = error.message || error;
             dispatch(obtenerContactosError(mensaje));
